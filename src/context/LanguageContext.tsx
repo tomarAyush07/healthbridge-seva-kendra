@@ -1,4 +1,3 @@
-
 import { createContext, useState, useContext, ReactNode } from 'react';
 
 // Language options
@@ -156,7 +155,35 @@ const translations: Translations = {
   'rights_reserved': {
     'en': 'All Rights Reserved',
     'hi': 'सर्वाधिकार सुरक्षित',
-  }
+  },
+  
+  // About page translations
+  'about_title': {
+    'en': 'About HealthBridge',
+    'hi': 'हेल्थब्रिज के बारे में',
+  },
+  'about_mission': {
+    'en': 'Our Mission',
+    'hi': 'हमारा मिशन',
+  },
+  'about_description': {
+    'en': 'HealthBridge is dedicated to transforming healthcare accessibility in India.',
+    'hi': 'हेल्थब्रिज भारत में स्वास्थ्य सेवा की पहुंच को बदलने के लिए समर्पित है।',
+  },
+  
+  // Contact page translations
+  'contact_title': {
+    'en': 'Get in Touch',
+    'hi': 'संपर्क करें',
+  },
+  'contact_description': {
+    'en': 'Have questions about our services? We're here to help.',
+    'hi': 'हमारी सेवाओं के बारे में सवाल हैं? हम मदद के लिए यहां हैं।',
+  },
+  'send_message': {
+    'en': 'Send Message',
+    'hi': 'संदेश भेजें',
+  },
 };
 
 // Types for context
