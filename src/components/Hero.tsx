@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -82,9 +81,9 @@ const Hero = () => {
           <div className="relative">
             <div className="absolute -inset-4 bg-gradient-to-r from-healthbridge-teal to-healthbridge-blue rounded-2xl blur-xl opacity-20 animate-pulse-scale"></div>
             <img 
-              src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&q=80&w=2670&h=2000" 
-              alt="Healthcare in rural India" 
-              className="relative rounded-2xl shadow-xl w-full max-w-lg object-cover aspect-[3/2]"
+              src="/lovable-uploads/719f9236-4ef9-4250-aec0-901cdb639bd3.png"
+              alt="AI-powered Healthcare Technology" 
+              className="relative rounded-2xl shadow-xl w-full max-w-lg object-cover aspect-[16/9]"
             />
             <div className="absolute -bottom-6 -right-6 bg-white rounded-lg shadow-lg p-4 flex items-start gap-3 max-w-xs">
               <div className="bg-green-100 rounded-full p-2 mt-1">
@@ -94,8 +93,8 @@ const Hero = () => {
                 </svg>
               </div>
               <div>
-                <p className="text-sm font-medium">Successfully served</p>
-                <p className="text-xl font-bold text-healthbridge-blue">1000+ villages</p>
+                <p className="text-sm font-medium">AI-Powered Healthcare</p>
+                <p className="text-xl font-bold text-healthbridge-blue">Next-Gen Solutions</p>
               </div>
             </div>
           </div>
