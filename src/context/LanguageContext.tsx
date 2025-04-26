@@ -1,3 +1,4 @@
+
 import { createContext, useState, useContext, ReactNode } from 'react';
 
 // Language options
@@ -184,6 +185,34 @@ const translations: Translations = {
     'en': 'Send Message',
     'hi': 'संदेश भेजें',
   },
+  'name_placeholder': {
+    'en': 'Your Name',
+    'hi': 'आपका नाम'
+  },
+  'email_contact_placeholder': {
+    'en': 'Your Email',
+    'hi': 'आपका ईमेल'
+  },
+  'message_placeholder': {
+    'en': 'Your Message',
+    'hi': 'आपका संदेश'
+  },
+  'contact_info': {
+    'en': 'Contact Information',
+    'hi': 'संपर्क जानकारी'
+  },
+  'address': {
+    'en': 'Address',
+    'hi': 'पता'
+  },
+  'phone': {
+    'en': 'Phone',
+    'hi': 'फोन'
+  },
+  'email': {
+    'en': 'Email',
+    'hi': 'ईमेल'
+  }
 };
 
 // Types for context

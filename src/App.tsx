@@ -12,6 +12,8 @@ import NotFound from "./pages/NotFound";
 import Schemes from "./pages/Schemes";
 import Blog from "./pages/Blog";
 import Login from "./pages/Login";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 
 // For framer-motion animations
 import { AnimatePresence } from "framer-motion";
