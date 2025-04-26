@@ -178,7 +178,7 @@ const translations: Translations = {
     'hi': 'संपर्क करें',
   },
   'contact_description': {
-    'en': 'Have questions about our services? We're here to help.',
+    'en': "Have questions about our services? We're here to help.",
     'hi': 'हमारी सेवाओं के बारे में सवाल हैं? हम मदद के लिए यहां हैं।',
   },
   'send_message': {
