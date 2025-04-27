@@ -1,189 +1,335 @@
-
-import { useState } from "react";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useLanguage } from "@/context/LanguageContext";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { 
+  Search, ArrowRight, Calendar, Clock, User, Tag,
+  Brain, Heart, Dna, Microscope, Activity, Globe
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Calendar, User, ChevronRight } from "lucide-react";
+import { useState, useRef } from "react";
 
-const blogPosts = [
-  {
-    id: 1,
-    title: "Understanding the Importance of Maternal Health in Rural India",
-    excerpt: "Maternal health in rural India faces unique challenges due to limited access to healthcare facilities and skilled professionals.",
-    image: "https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?ixlib=rb-4.0.3&auto=format&fit=crop&q=80&w=2670&h=2000",
-    date: "April 15, 2023",
-    author: "Dr. Anjali Desai",
-    category: "Maternal Health"
-  },
-  {
-    id: 2,
-    title: "Common Monsoon Diseases and Prevention Tips",
-    excerpt: "Monsoon season in India brings relief from the summer heat but also increases the risk of various seasonal diseases that can affect communities.",
-    image: "https://images.unsplash.com/photo-1493612276216-ee3925520721?ixlib=rb-4.0.3&auto=format&fit=crop&q=80&w=2670&h=2000",
-    date: "June 22, 2023",
-    author: "Dr. Rajesh Kumar",
-    category: "Seasonal Health"
-  },
-  {
-    id: 3,
-    title: "The Role of Telemedicine in Rural Healthcare",
-    excerpt: "Telemedicine is revolutionizing healthcare delivery in remote areas by connecting patients with specialists regardless of geographical barriers.",
-    image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-4.0.3&auto=format&fit=crop&q=80&w=2670&h=2000",
-    date: "July 5, 2023",
-    author: "Dr. Meenakshi Sharma",
-    category: "Technology in Healthcare"
-  },
-  {
-    id: 4,
-    title: "Nutritional Guidelines for Preventing Anemia",
-    excerpt: "Anemia remains a significant health concern in India, particularly among women and children. Learn about proper nutrition to prevent it.",
-    image: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-4.0.3&auto=format&fit=crop&q=80&w=2670&h=2000",
-    date: "August 18, 2023",
-    author: "Priya Nair, Nutritionist",
-    category: "Nutrition"
-  },
-  {
-    id: 5,
-    title: "Mental Health Awareness in Rural Communities",
-    excerpt: "Mental health issues often go unaddressed in rural areas due to stigma and lack of awareness. Let's change the conversation.",
-    image: "https://images.unsplash.com/photo-1527137342181-19aab11a8ee8?ixlib=rb-4.0.3&auto=format&fit=crop&q=80&w=2670&h=2000",
-    date: "September 10, 2023",
-    author: "Dr. Sanjay Verma",
-    category: "Mental Health"
-  },
-  {
-    id: 6,
-    title: "Understanding Government Health Insurance Schemes",
-    excerpt: "Navigate the various health insurance schemes offered by the government and understand how to make the most of these benefits.",
-    image: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-4.0.3&auto=format&fit=crop&q=80&w=2670&h=2000",
-    date: "October 3, 2023",
-    author: "Vikram Singh",
-    category: "Health Policy"
-  },
-];
-
-const categories = [
-  "All Categories",
-  "Maternal Health",
-  "Child Health",
-  "Nutrition",
-  "Mental Health",
-  "Seasonal Health",
-  "Health Policy",
-  "Technology in Healthcare",
-];
-
-const BlogPage = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All Categories");
-
-  const filteredPosts = blogPosts.filter(post => {
-    const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesCategory = selectedCategory === "All Categories" || 
-                            post.category === selectedCategory;
-    
-    return matchesSearch && matchesCategory;
+const Blog = () => {
+  const { t } = useLanguage();
+  const [searchQuery, setSearchQuery] = useState("");
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
   });
 
+  const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1, 0]);
+
+  const blogCategories = [
+    { name: "AI in Healthcare", icon: Brain, color: "from-purple-500 to-indigo-500" },
+    { name: "Medical Research", icon: Microscope, color: "from-blue-500 to-cyan-500" },
+    { name: "Patient Care", icon: Heart, color: "from-pink-500 to-rose-500" },
+    { name: "Genomics", icon: Dna, color: "from-emerald-500 to-green-500" },
+    { name: "Health Tech", icon: Activity, color: "from-orange-500 to-amber-500" },
+    { name: "Global Health", icon: Globe, color: "from-blue-500 to-indigo-500" }
+  ];
+
+  const featuredPosts = [
+    {
+      id: 1,
+      title: "Revolutionary AI in Medical Diagnosis",
+      excerpt: "How artificial intelligence is transforming disease detection with 99% accuracy in early-stage diagnostics.",
+      category: "AI in Healthcare",
+      author: "Dr. Sarah Chen",
+      date: "2025-03-15",
+      readTime: "8 min",
+      image: "https://images.pexels.com/photos/7659564/pexels-photo-7659564.jpeg",
+      tags: ["AI", "Diagnostics", "Innovation"]
+    },
+    {
+      id: 2,
+      title: "CRISPR Gene Therapy Breakthroughs",
+      excerpt: "Latest developments in gene editing technology showing promising results in treating genetic disorders.",
+      category: "Medical Research",
+      author: "Dr. James Wilson",
+      date: "2025-03-14",
+      readTime: "7 min",
+      image: "https://images.pexels.com/photos/2280571/pexels-photo-2280571.jpeg",
+      tags: ["CRISPR", "Genetics", "Research"]
+    },
+    {
+      id: 3,
+      title: "5G Revolution in Telemedicine",
+      excerpt: "How 5G technology is enabling remote surgeries and transforming healthcare delivery worldwide.",
+      category: "Health Tech",
+      author: "Emily Roberts",
+      date: "2025-03-13",
+      readTime: "6 min",
+      image: "https://images.pexels.com/photos/4226256/pexels-photo-4226256.jpeg",
+      tags: ["5G", "Telemedicine", "Innovation"]
+    },
+    {
+      id: 4,
+      title: "Quantum Computing in Drug Discovery",
+      excerpt: "Quantum algorithms accelerating drug development process from years to months with unprecedented accuracy.",
+      category: "Medical Research",
+      author: "Dr. Michael Chang",
+      date: "2025-03-12",
+      readTime: "9 min",
+      image: "https://images.pexels.com/photos/8439093/pexels-photo-8439093.jpeg",
+      tags: ["Quantum Computing", "Drug Development", "Research"]
+    },
+    {
+      id: 5,
+      title: "Nanotechnology in Cancer Treatment",
+      excerpt: "Revolutionary nanorobots targeting cancer cells with precision, minimizing damage to healthy tissue.",
+      category: "Medical Research",
+      author: "Dr. Lisa Anderson",
+      date: "2025-03-11",
+      readTime: "8 min",
+      image: "https://images.pexels.com/photos/3825527/pexels-photo-3825527.jpeg",
+      tags: ["Nanotechnology", "Cancer", "Treatment"]
+    },
+    {
+      id: 6,
+      title: "Brain-Computer Interfaces in Medicine",
+      excerpt: "Neural implants helping paralyzed patients regain mobility through thought-controlled prosthetics.",
+      category: "Health Tech",
+      author: "Dr. Robert Martinez",
+      date: "2025-03-10",
+      readTime: "10 min",
+      image: "https://images.pexels.com/photos/8438922/pexels-photo-8438922.jpeg",
+      tags: ["Neuroscience", "BCI", "Innovation"]
+    }
+  ];
+
+  const recentPosts = [
+    {
+      id: 7,
+      title: "AR/VR in Medical Training",
+      category: "Health Tech",
+      date: "2025-03-09",
+      image: "https://images.pexels.com/photos/8441771/pexels-photo-8441771.jpeg"
+    },
+    {
+      id: 8,
+      title: "Personalized Medicine Through AI",
+      category: "AI in Healthcare",
+      date: "2025-03-08",
+      image: "https://images.pexels.com/photos/7579831/pexels-photo-7579831.jpeg"
+    },
+    {
+      id: 9,
+      title: "Future of Robotic Surgery",
+      category: "Medical Research",
+      date: "2025-03-07",
+      image: "https://images.pexels.com/photos/7088530/pexels-photo-7088530.jpeg"
+    }
+  ];
+
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-100 via-blue-50 to-slate-100">
       <Header />
       
-      <main className="flex-1 py-12">
-        <div className="container px-4">
-          <h1 className="text-3xl md:text-4xl font-bold mb-2 text-center font-display">
-            <span className="text-gradient">Health Blog</span>
-          </h1>
-          <p className="text-center text-gray-600 mb-8 max-w-2xl mx-auto">
-            Stay informed with the latest health tips, news, and stories from our expert team of healthcare professionals.
-          </p>
-          
-          {/* Search and filter section */}
-          <div className="max-w-4xl mx-auto mb-12">
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-                <Input 
-                  type="text"
-                  placeholder="Search articles..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
-              
-              <select 
-                className="border rounded-md p-2 bg-white"
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
+      <main className="flex-1" ref={containerRef}>
+        {/* Hero Section */}
+        <motion.section 
+          className="relative py-20 overflow-hidden"
+          style={{ y, opacity }}
+        >
+          <div className="absolute inset-0">
+            {/* Animated Grid Background */}
+            <div 
+              className="absolute inset-0 opacity-[0.05]"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54 0h6v6h-6zM0 54h6v6H0z' fill='%234F46E5' fill-opacity='0.4'/%3E%3C/svg%3E")`,
+                backgroundSize: '30px 30px'
+              }}
+            />
+            
+            {/* Gradient Orbs */}
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-200/30 rounded-full filter blur-3xl animate-pulse" />
+            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-200/30 rounded-full filter blur-3xl animate-pulse delay-1000" />
+          </div>
+
+          <div className="container relative z-10 px-4">
+            <div className="text-center max-w-4xl mx-auto">
+              <motion.h1 
+                className="text-6xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
               >
-                {categories.map((category) => (
-                  <option key={category} value={category}>{category}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-          
-          {/* Blog post grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {filteredPosts.map((post) => (
-              <div key={post.id} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                <img 
-                  src={post.image}
-                  alt={post.title}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-5">
-                  <div className="flex justify-between items-center mb-2 text-sm text-gray-500">
-                    <div className="flex items-center gap-2">
-                      <Calendar size={14} />
-                      <span>{post.date}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <User size={14} />
-                      <span>{post.author.split(',')[0]}</span>
-                    </div>
-                  </div>
-                  
-                  <h3 className="text-xl font-semibold mb-2 line-clamp-2">
-                    {post.title}
-                  </h3>
-                  <p className="text-gray-600 mb-4 line-clamp-3">
-                    {post.excerpt}
-                  </p>
-                  
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs font-medium px-3 py-1 bg-healthbridge-light text-healthbridge-blue rounded-full">
-                      {post.category}
-                    </span>
-                    <Button variant="ghost" size="sm" className="text-healthbridge-blue hover:text-healthbridge-blue/80 p-0">
-                      Read More <ChevronRight className="ml-1 h-4 w-4" />
-                    </Button>
-                  </div>
+                Healthcare Insights
+              </motion.h1>
+              <motion.p 
+                className="text-xl text-gray-600 mb-8"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+              >
+                Explore the latest breakthroughs and innovations in healthcare technology
+              </motion.p>
+
+              {/* Search Bar */}
+              <motion.div 
+                className="max-w-2xl mx-auto relative group"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 rounded-lg blur group-hover:blur-xl transition-all duration-300" />
+                <div className="relative flex gap-2">
+                  <Input
+                    type="text"
+                    placeholder="Search articles..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full bg-white/80 border-0 text-gray-900 placeholder:text-gray-500 focus-visible:ring-2 focus-visible:ring-blue-500"
+                  />
+                  <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white">
+                    <Search className="w-5 h-5" />
+                  </Button>
                 </div>
-              </div>
-            ))}
+              </motion.div>
+            </div>
+
+            {/* Categories */}
+            <motion.div 
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-16"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+            >
+              {blogCategories.map((category, index) => (
+                <motion.div
+                  key={category.name}
+                  className="group relative"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                >
+                  <div className={`absolute inset-0 bg-gradient-to-br ${category.color} rounded-xl opacity-20 blur-sm group-hover:blur transition-all duration-300`} />
+                  <div className="relative bg-white/80 backdrop-blur-xl rounded-xl p-4 border border-blue-100/20">
+                    <category.icon className="w-8 h-8 mb-2 text-gray-800" />
+                    <h3 className="text-gray-800 font-semibold">{category.name}</h3>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
-          
-          {/* Pagination */}
-          <div className="flex justify-center">
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" disabled>Previous</Button>
-              <Button variant="outline" size="sm" className="bg-healthbridge-blue text-white">1</Button>
-              <Button variant="outline" size="sm">2</Button>
-              <Button variant="outline" size="sm">3</Button>
-              <Button variant="outline" size="sm">Next</Button>
+        </motion.section>
+
+        {/* Featured Posts */}
+        <section className="py-20 relative">
+          <div className="container px-4">
+            <h2 className="text-4xl font-bold mb-12 text-gray-800">Featured Articles</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {featuredPosts.map((post, index) => (
+                <motion.article
+                  key={post.id}
+                  className="group relative"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.2 }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500" />
+                  <div className="relative bg-white/80 backdrop-blur-xl rounded-2xl overflow-hidden border border-blue-100/20">
+                    <div className="aspect-[16/10] overflow-hidden">
+                      <img 
+                        src={post.image} 
+                        alt={post.title}
+                        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                      />
+                    </div>
+                    <div className="p-6">
+                      <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-4 h-4" />
+                          {post.date}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-4 h-4" />
+                          {post.readTime}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <User className="w-4 h-4" />
+                          {post.author}
+                        </span>
+                      </div>
+                      <h3 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-blue-600 transition-colors">
+                        {post.title}
+                      </h3>
+                      <p className="text-gray-600 mb-4">{post.excerpt}</p>
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {post.tags.map(tag => (
+                          <span 
+                            key={tag}
+                            className="flex items-center gap-1 text-sm px-3 py-1 rounded-full bg-blue-50 text-blue-600 border border-blue-100"
+                          >
+                            <Tag className="w-3 h-3" />
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                      <Button 
+                        variant="ghost" 
+                        className="group/btn text-blue-600 hover:text-blue-700"
+                      >
+                        Read More 
+                        <ArrowRight className="w-4 h-4 ml-2 transform group-hover/btn:translate-x-1 transition-transform" />
+                      </Button>
+                    </div>
+                  </div>
+                </motion.article>
+              ))}
             </div>
           </div>
-        </div>
+        </section>
+
+        {/* Recent Posts */}
+        <section className="py-20 relative">
+          <div className="container px-4">
+            <h2 className="text-4xl font-bold mb-12 text-gray-800">Recent Posts</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {recentPosts.map((post, index) => (
+                <motion.article
+                  key={post.id}
+                  className="group relative"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  whileHover={{ y: -5 }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-xl blur-lg group-hover:blur-xl transition-all duration-300" />
+                  <div className="relative bg-white/80 backdrop-blur-xl rounded-xl overflow-hidden border border-blue-100/20">
+                    <div className="aspect-video overflow-hidden">
+                      <img 
+                        src={post.image} 
+                        alt={post.title}
+                        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                      />
+                    </div>
+                    <div className="p-4">
+                      <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
+                        <Calendar className="w-4 h-4" />
+                        {post.date}
+                      </div>
+                      <h3 className="text-lg font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">
+                        {post.title}
+                      </h3>
+                      <span className="text-sm text-blue-600">{post.category}</span>
+                    </div>
+                  </div>
+                </motion.article>
+              ))}
+            </div>
+          </div>
+        </section>
       </main>
-      
+
       <Footer />
     </div>
   );
 };
 
-export default BlogPage;
+export default Blog;

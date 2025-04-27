@@ -1,16 +1,32 @@
-
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import LanguageSelector from "./LanguageSelector";
 import { useLanguage } from "@/context/LanguageContext";
+import { cn } from "@/lib/utils";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useLanguage();
+  const location = useLocation();
 
   const toggleMenu = () => setIsOpen(!isOpen);
+
+  const navLinks = [
+    { path: "/", label: 'home' },
+    { path: "/schemes", label: 'schemes' },
+    { path: "/blog", label: 'blog' },
+    { path: "/about", label: 'about' },
+    { path: "/contact", label: 'contact' }
+  ];
+
+  const isActivePath = (path: string) => {
+    if (path === "/" && location.pathname !== "/") {
+      return false;
+    }
+    return location.pathname.startsWith(path);
+  };
 
   return (
     <header className="sticky top-0 bg-white/90 backdrop-blur-sm shadow-sm z-40">
@@ -26,21 +42,24 @@ const Header = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
-          <Link to="/" className="text-healthbridge-dark hover:text-healthbridge-blue transition-colors">
-            {t('home')}
-          </Link>
-          <Link to="/schemes" className="text-healthbridge-dark hover:text-healthbridge-blue transition-colors">
-            {t('schemes')}
-          </Link>
-          <Link to="/blog" className="text-healthbridge-dark hover:text-healthbridge-blue transition-colors">
-            {t('blog')}
-          </Link>
-          <Link to="/about" className="text-healthbridge-dark hover:text-healthbridge-blue transition-colors">
-            {t('about')}
-          </Link>
-          <Link to="/contact" className="text-healthbridge-dark hover:text-healthbridge-blue transition-colors">
-            {t('contact')}
-          </Link>
+          {navLinks.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              className={cn(
+                "relative py-2 text-healthbridge-dark transition-colors group",
+                isActivePath(link.path) ? "text-healthbridge-blue" : "hover:text-healthbridge-blue"
+              )}
+            >
+              {t(link.label)}
+              <div
+                className={cn(
+                  "absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-healthbridge-blue to-healthbridge-teal transform origin-left transition-transform duration-300",
+                  isActivePath(link.path) ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                )}
+              />
+            </Link>
+          ))}
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
@@ -70,56 +89,34 @@ const Header = () => {
       {isOpen && (
         <div className="md:hidden bg-white border-t">
           <nav className="flex flex-col p-4 space-y-3">
-            <Link 
-              to="/" 
-              className="px-4 py-2 hover:bg-gray-100 rounded-md" 
-              onClick={() => setIsOpen(false)}
-            >
-              {t('home')}
-            </Link>
-            <Link 
-              to="/schemes" 
-              className="px-4 py-2 hover:bg-gray-100 rounded-md" 
-              onClick={() => setIsOpen(false)}
-            >
-              {t('schemes')}
-            </Link>
-            <Link 
-              to="/blog" 
-              className="px-4 py-2 hover:bg-gray-100 rounded-md" 
-              onClick={() => setIsOpen(false)}
-            >
-              {t('blog')}
-            </Link>
-            <Link 
-              to="/about" 
-              className="px-4 py-2 hover:bg-gray-100 rounded-md" 
-              onClick={() => setIsOpen(false)}
-            >
-              {t('about')}
-            </Link>
-            <Link 
-              to="/contact" 
-              className="px-4 py-2 hover:bg-gray-100 rounded-md" 
-              onClick={() => setIsOpen(false)}
-            >
-              {t('contact')}
-            </Link>
-            <div className="flex flex-col gap-2 pt-2 border-t">
-              <Link 
-                to="/login" 
-                className="w-full" 
+            {navLinks.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={cn(
+                  "px-4 py-2 rounded-md relative overflow-hidden group",
+                  isActivePath(link.path) 
+                    ? "bg-blue-50 text-healthbridge-blue" 
+                    : "hover:bg-gray-50"
+                )}
                 onClick={() => setIsOpen(false)}
               >
+                <span className="relative z-10">{t(link.label)}</span>
+                <div
+                  className={cn(
+                    "absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-healthbridge-blue to-healthbridge-teal w-full transform origin-left transition-transform duration-300",
+                    isActivePath(link.path) ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                  )}
+                />
+              </Link>
+            ))}
+            <div className="flex flex-col gap-2 pt-2 border-t">
+              <Link to="/login" className="w-full" onClick={() => setIsOpen(false)}>
                 <Button variant="outline" className="w-full">
                   {t('login')}
                 </Button>
               </Link>
-              <Link 
-                to="/signup" 
-                className="w-full" 
-                onClick={() => setIsOpen(false)}
-              >
+              <Link to="/signup" className="w-full" onClick={() => setIsOpen(false)}>
                 <Button className="w-full bg-healthbridge-blue hover:bg-healthbridge-blue/90">
                   {t('signup')}
                 </Button>

@@ -1,4 +1,3 @@
-
 import { createContext, useState, useContext, ReactNode } from 'react';
 
 // Language options
@@ -76,6 +75,30 @@ const translations: Translations = {
   'learn_more': {
     'en': 'Learn More',
     'hi': 'और जानें',
+  },
+  'govt_certified': {
+    'en': 'Govt. Certified',
+    'hi': 'सरकारी प्रमाणित',
+  },
+  'support_24_7': {
+    'en': '24/7 Support',
+    'hi': '24/7 सहायता',
+  },
+  'secure_private': {
+    'en': 'Secure & Private',
+    'hi': 'सुरक्षित और निजी',
+  },
+  'ai_healthcare_alt': {
+    'en': 'AI-powered Healthcare Technology',
+    'hi': 'एआई-संचालित स्वास्थ्य सेवा प्रौद्योगिकी',
+  },
+  'ai_healthcare': {
+    'en': 'AI-Powered Healthcare',
+    'hi': 'एआई-संचालित स्वास्थ्य सेवा',
+  },
+  'next_gen_solutions': {
+    'en': 'Next-Gen Solutions',
+    'hi': 'अगली पीढ़ी के समाधान',
   },
   
   // Services
@@ -212,7 +235,181 @@ const translations: Translations = {
   'email': {
     'en': 'Email',
     'hi': 'ईमेल'
-  }
+  },
+
+  // Footer translations
+  'footer_description': {
+    'en': 'Transforming healthcare access for underserved communities across India.',
+    'hi': 'भारत भर में वंचित समुदायों के लिए स्वास्थ्य सेवा पहुंच को बदलना।',
+  },
+  'facebook': {
+    'en': 'Facebook',
+    'hi': 'फेसबुक',
+  },
+  'instagram': {
+    'en': 'Instagram',
+    'hi': 'इंस्टाग्राम',
+  },
+  'twitter': {
+    'en': 'Twitter',
+    'hi': 'ट्विटर',
+  },
+  'quick_links': {
+    'en': 'Quick Links',
+    'hi': 'त्वरित लिंक',
+  },
+  'resources': {
+    'en': 'Resources',
+    'hi': 'संसाधन',
+  },
+  'faqs': {
+    'en': 'FAQs',
+    'hi': 'अक्सर पूछे जाने वाले प्रश्न',
+  },
+  'privacy_policy': {
+    'en': 'Privacy Policy',
+    'hi': 'गोपनीयता नीति',
+  },
+  'terms_of_service': {
+    'en': 'Terms of Service',
+    'hi': 'सेवा की शर्तें',
+  },
+  'careers': {
+    'en': 'Careers',
+    'hi': 'करियर',
+  },
+  'support': {
+    'en': 'Support',
+    'hi': 'सहायता',
+  },
+  'footer_address': {
+    'en': 'HealthBridge Foundation, 123 Healthcare Way,\nNew Delhi - 110001, India',
+    'hi': 'हेल्थब्रिज फाउंडेशन, 123 हेल्थकेयर वे,\nनई दिल्ली - 110001, भारत',
+  },
+  'privacy': {
+    'en': 'Privacy',
+    'hi': 'गोपनीयता',
+  },
+  'terms': {
+    'en': 'Terms',
+    'hi': 'शर्तें',
+  },
+  'cookies': {
+    'en': 'Cookies',
+    'hi': 'कुकीज़',
+  },
+
+  // Schemes page translations
+  'schemes_title': {
+    'en': 'Health Schemes',
+    'hi': 'स्वास्थ्य योजनाएं',
+  },
+  'schemes_description': {
+    'en': 'Explore various government health schemes available for citizens across India.',
+    'hi': 'भारत भर के नागरिकों के लिए उपलब्ध विभिन्न सरकारी स्वास्थ्य योजनाओं का अन्वेषण करें।',
+  },
+  'search_schemes': {
+    'en': 'Search schemes by name or description...',
+    'hi': 'नाम या विवरण से योजनाएं खोजें...',
+  },
+  'select_category': {
+    'en': 'Select category',
+    'hi': 'श्रेणी चुनें',
+  },
+  'all_categories': {
+    'en': 'All Categories',
+    'hi': 'सभी श्रेणियां',
+  },
+  'insurance': {
+    'en': 'Insurance',
+    'hi': 'बीमा',
+  },
+  'digital_health': {
+    'en': 'Digital Health',
+    'hi': 'डिजिटल स्वास्थ्य',
+  },
+  'maternal_health': {
+    'en': 'Maternal Health',
+    'hi': 'मातृ स्वास्थ्य',
+  },
+  'child_health': {
+    'en': 'Child Health',
+    'hi': 'बाल स्वास्थ्य',
+  },
+  'elderly_care': {
+    'en': 'Elderly Care',
+    'hi': 'वृद्ध देखभाल',
+  },
+  'mental_health': {
+    'en': 'Mental Health',
+    'hi': 'मानसिक स्वास्थ्य',
+  },
+  'infrastructure': {
+    'en': 'Infrastructure',
+    'hi': 'अवसंरचना',
+  },
+  'rural_health': {
+    'en': 'Rural Health',
+    'hi': 'ग्रामीण स्वास्थ्य',
+  },
+  'ncd': {
+    'en': 'Non-Communicable Diseases',
+    'hi': 'गैर-संचारी रोग',
+  },
+  'vision_care': {
+    'en': 'Vision Care',
+    'hi': 'दृष्टि देखभाल',
+  },
+  'hearing_care': {
+    'en': 'Hearing Care',
+    'hi': 'श्रवण देखभाल',
+  },
+  'palliative_care': {
+    'en': 'Palliative Care',
+    'hi': 'पैलिएटिव केयर',
+  },
+  'dental_care': {
+    'en': 'Dental Care',
+    'hi': 'दंत देखभाल',
+  },
+  'eligibility': {
+    'en': 'Eligibility',
+    'hi': 'पात्रता',
+  },
+  'benefits': {
+    'en': 'Benefits',
+    'hi': 'लाभ',
+  },
+  'active': {
+    'en': 'Active',
+    'hi': 'सक्रिय',
+  },
+  'inactive': {
+    'en': 'Inactive',
+    'hi': 'निष्क्रिय',
+  },
+
+  // Home page translations
+  'services_description': {
+    'en': 'Comprehensive healthcare services designed to meet the needs of every Indian citizen.',
+    'hi': 'हर भारतीय नागरिक की जरूरतों को पूरा करने के लिए डिज़ाइन की गई व्यापक स्वास्थ्य सेवाएं।'
+  },
+  'telemedicine_description': {
+    'en': 'Virtual consultations with expert doctors from the comfort of your home.',
+    'hi': 'आपके घर के आराम से विशेषज्ञ डॉक्टरों के साथ वर्चुअल परामर्श।'
+  },
+  'health_camps_description': {
+    'en': 'Regular health check-up camps in rural and urban areas.',
+    'hi': 'ग्रामीण और शहरी क्षेत्रों में नियमित स्वास्थ्य जांच शिविर।'
+  },
+  'medicine_delivery_description': {
+    'en': 'Fast and reliable medicine delivery to your doorstep.',
+    'hi': 'आपके दरवाजे तक तेज और विश्वसनीय दवा वितरण।'
+  },
+  'diagnostics_description': {
+    'en': 'Advanced diagnostic services with quick results.',
+    'hi': 'त्वरित परिणामों के साथ उन्नत नैदानिक सेवाएं।'
+  },
 };
 
 // Types for context

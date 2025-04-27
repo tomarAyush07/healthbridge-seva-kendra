@@ -1,107 +1,213 @@
-
-import { motion } from "framer-motion";
-import { CheckCircle } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
+import { Users, Heart, Activity, Award, Clock, MapPin, Star, Leaf, Target, Smile } from "lucide-react";
+import { useRef } from "react";
 
 const impactData = [
   {
-    title: "Health Coverage",
-    value: "1000+",
-    description: "Villages reached with essential healthcare services"
+    title: "Community Impact",
+    value: "500+",
+    description: "Lives transformed through healthcare initiatives",
+    icon: <Heart className="w-10 h-10" />,
+    color: "from-healthbridge-blue to-healthbridge-teal",
+    delay: 0.1
   },
   {
-    title: "Maternal Health",
-    value: "40%",
-    description: "Reduction in maternal mortality in served areas"
+    title: "Rural Development",
+    value: "100+",
+    description: "Villages with improved healthcare infrastructure",
+    icon: <MapPin className="w-10 h-10" />,
+    color: "from-healthbridge-teal to-emerald-500",
+    delay: 0.2
   },
   {
-    title: "Disease Prevention",
-    value: "70%",
-    description: "Rise in vaccination coverage among children"
+    title: "Health Awareness",
+    value: "50+",
+    description: "Individuals educated on preventive healthcare",
+    icon: <Target className="w-10 h-10" />,
+    color: "from-emerald-500 to-teal-500",
+    delay: 0.3
   },
   {
-    title: "Healthcare Access",
-    value: "60%",
-    description: "Increase in access to basic healthcare services"
+    title: "Patient Satisfaction",
+    value: "95%",
+    description: "Positive feedback from community members",
+    icon: <Smile className="w-10 h-10" />,
+    color: "from-healthbridge-blue to-indigo-500",
+    delay: 0.4
+  },
+  {
+    title: "Sustainable Impact",
+    value: "20+",
+    description: "Environmentally conscious healthcare delivery",
+    icon: <Leaf className="w-10 h-10" />,
+    color: "from-healthbridge-teal to-cyan-500",
+    delay: 0.5
+  },
+  {
+    title: "Years of Service",
+    value: "3+",
+    description: "Dedicated to community healthcare",
+    icon: <Award className="w-10 h-10" />,
+    color: "from-indigo-500 to-purple-500",
+    delay: 0.6
   }
 ];
 
 const ImpactSection = () => {
   const { t } = useLanguage();
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.8, 1, 1, 0.8]);
+  const y = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [50, 0, 0, 50]);
 
   return (
-    <section className="section-padding bg-gradient-to-b from-healthbridge-light to-white">
-      <div className="container px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 font-display">
-            <span className="text-gradient">{t('our_impact')}</span>
+    <motion.section 
+      ref={sectionRef}
+      style={{ opacity, scale, y }}
+      className="py-24 bg-gradient-to-br from-healthbridge-dark to-healthbridge-teal relative overflow-hidden"
+    >
+      {/* Animated Background */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-healthbridge-blue/10 via-transparent to-transparent animate-pulse"></div>
+        <div className="absolute inset-0 bg-[url('/dots.svg')] bg-repeat opacity-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-healthbridge-dark/50 to-transparent"></div>
+      </div>
+
+      <div className="container relative z-10">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          className="text-center mb-20"
+        >
+          <h2 className="text-5xl md:text-6xl font-bold mb-6 text-white">
+            Community Impact
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            {t('impact_title')}
+          <p className="text-white/80 text-xl max-w-3xl mx-auto">
+            Making a difference in communities through sustainable healthcare initiatives
           </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {impactData.map((item, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: item.delay }}
+              viewport={{ once: true }}
+              className="group"
+            >
+              <div className="h-full bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 hover:border-white/40 transition-all duration-500 hover:scale-105 relative overflow-hidden">
+                {/* Hover Effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-healthbridge-blue/20 to-healthbridge-teal/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                
+                <div className="relative z-10">
+                  <div className="flex items-center gap-4 mb-6">
+                    <motion.div 
+                      className={`p-4 rounded-xl bg-gradient-to-br ${item.color} text-white shadow-lg`}
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                    >
+                      {item.icon}
+                    </motion.div>
+                    <h3 className="text-2xl font-bold text-white">{item.title}</h3>
+                  </div>
+                  <motion.div 
+                    className="text-5xl font-bold text-white mb-3 min-h-[60px] flex items-center"
+                    initial={{ scale: 0.5, opacity: 0 }}
+                    whileInView={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.5, delay: item.delay + 0.2 }}
+                    viewport={{ once: true }}
+                  >
+                    {item.value}
+                  </motion.div>
+                  <p className="text-white/80 text-lg">{item.description}</p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="order-2 md:order-1">
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ staggerChildren: 0.2, delayChildren: 0.3 }}
-              viewport={{ once: true }}
-              className="grid grid-cols-1 sm:grid-cols-2 gap-6"
-            >
-              {impactData.map((item, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  viewport={{ once: true }}
-                  className="bg-white rounded-xl shadow-md p-6 border border-gray-100"
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.7 }}
+          viewport={{ once: true }}
+          className="mt-20 bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm rounded-2xl p-12 border border-white/20 relative overflow-hidden"
+        >
+          {/* Hover Effect */}
+          <div className="absolute inset-0 bg-gradient-to-br from-healthbridge-blue/20 to-healthbridge-teal/20 opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
+          
+          <div className="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <h3 className="text-3xl font-bold text-white mb-6">Our Community Commitment</h3>
+              <ul className="space-y-6">
+                <motion.li 
+                  className="flex items-center gap-4 text-white"
+                  whileHover={{ x: 10 }}
+                  transition={{ type: "spring", stiffness: 300 }}
                 >
-                  <h3 className="text-healthbridge-blue font-semibold mb-2">{item.title}</h3>
-                  <p className="text-3xl font-bold mb-2">{item.value}</p>
-                  <p className="text-gray-600 text-sm">{item.description}</p>
-                </motion.div>
-              ))}
+                  <div className="p-3 rounded-lg bg-healthbridge-blue/20">
+                    <Heart className="w-6 h-6 text-healthbridge-blue" />
+                  </div>
+                  <span className="text-lg">Empowering local communities</span>
+                </motion.li>
+                <motion.li 
+                  className="flex items-center gap-4 text-white"
+                  whileHover={{ x: 10 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <div className="p-3 rounded-lg bg-healthbridge-teal/20">
+                    <Activity className="w-6 h-6 text-healthbridge-teal" />
+                  </div>
+                  <span className="text-lg">Sustainable healthcare solutions</span>
+                </motion.li>
+                <motion.li 
+                  className="flex items-center gap-4 text-white"
+                  whileHover={{ x: 10 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <div className="p-3 rounded-lg bg-emerald-500/20">
+                    <Leaf className="w-6 h-6 text-emerald-400" />
+                  </div>
+                  <span className="text-lg">Environmentally friendly practices</span>
+                </motion.li>
+                <motion.li 
+                  className="flex items-center gap-4 text-white"
+                  whileHover={{ x: 10 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <div className="p-3 rounded-lg bg-indigo-500/20">
+                    <Users className="w-6 h-6 text-indigo-400" />
+                  </div>
+                  <span className="text-lg">Community-driven initiatives</span>
+                </motion.li>
+              </ul>
+            </div>
+            <motion.div 
+              className="relative rounded-2xl overflow-hidden"
+              whileHover={{ scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <img 
+                src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&q=80&w=2670&h=2000" 
+                alt="Community impact"
+                className="w-full h-full object-cover rounded-2xl"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-healthbridge-dark/80 via-transparent to-transparent"></div>
             </motion.div>
           </div>
-          
-          <motion.div 
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7 }}
-            viewport={{ once: true }}
-            className="order-1 md:order-2"
-          >
-            <div className="relative rounded-xl overflow-hidden shadow-xl">
-              <img 
-                src="https://images.unsplash.com/photo-1496275068113-fff8c90750d1?ixlib=rb-4.0.3&auto=format&fit=crop&q=80&w=2670&h=2000" 
-                alt="Impact in rural communities"
-                className="w-full h-auto object-cover rounded-xl"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-healthbridge-dark/70 via-transparent to-transparent flex flex-col justify-end p-6">
-                <h3 className="text-white text-xl font-semibold mb-4">Our Commitment to Sustainable Impact</h3>
-                <ul className="space-y-2">
-                  <li className="flex items-center gap-3 text-white">
-                    <CheckCircle className="w-5 h-5 text-healthbridge-teal" />
-                    <span>Sustainable community health initiatives</span>
-                  </li>
-                  <li className="flex items-center gap-3 text-white">
-                    <CheckCircle className="w-5 h-5 text-healthbridge-teal" />
-                    <span>Training local healthcare workers</span>
-                  </li>
-                  <li className="flex items-center gap-3 text-white">
-                    <CheckCircle className="w-5 h-5 text-healthbridge-teal" />
-                    <span>Building lasting healthcare infrastructure</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </motion.div>
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 
