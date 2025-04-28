@@ -1,73 +1,52 @@
-# Welcome to your Lovable project
+# 🚀 Welcome to HealthBridge — Seva Kendra
 
-## Project info
+🌐 **Live Project**: _Coming Soon_
 
-**URL**: https://lovable.dev/projects/0565a117-682b-47c0-964f-e346b3aea72f
+HealthBridge is a **futuristic, multilingual**, and **impact-driven health-tech platform** designed to serve the **underserved communities of India**. The platform bridges the gap between healthcare services, **AI-driven solutions**, and **government welfare schemes**, offering personalized health insights and access to public health programs.
 
-## How can I edit this code?
+This project aims to empower people in rural and economically disadvantaged areas by making healthcare more accessible, affordable, and understandable.
 
-There are several ways of editing your application.
+---
 
-**Use Lovable**
+## ✨ Key Features
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/0565a117-682b-47c0-964f-e346b3aea72f) and start prompting.
+### 1. **AI-Driven Health Insights**
+Using **Artificial Intelligence**, HealthBridge provides **personalized health recommendations** based on user data. It leverages machine learning algorithms to predict health conditions, suggest preventive measures, and offer advice on treatment options, tailored specifically for users in underserved regions.
 
-Changes made via Lovable will be committed automatically to this repo.
+### 2. **Access to Government Schemes**
+HealthBridge aims to streamline access to **Indian government health schemes** by offering a single platform where users can easily learn about and apply for subsidies, free treatments, health insurance, and other welfare programs. This is especially important for marginalized communities who often lack awareness of such programs.
 
-**Use your preferred IDE**
+### 3. **Multilingual Support**
+To ensure accessibility across India’s diverse linguistic landscape, HealthBridge offers **multilingual support**, enabling users to interact with the platform in their native languages, reducing barriers related to language and literacy.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### 4. **Futuristic UI/UX**
+The platform is built with a clean, modern, and user-friendly interface using **React** and **Tailwind CSS**. The design is specifically created to be intuitive for people with varying levels of digital literacy, ensuring easy navigation even for those who may be new to technology.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+---
 
-Follow these steps:
+## ✨ How to Edit This Project
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### 1. Use Lovable
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+- Open the Lovable project dashboard.
+- Start prompting changes.
+- Changes are automatically committed to GitHub.
 
-# Step 3: Install the necessary dependencies.
-npm i
+---
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+### 2. Work Locally with Your IDE
+
+> Make sure Node.js and npm are installed.
+
+```bash
+# Clone the repository
+git clone <YOUR_REPOSITORY_URL>
+
+# Move into the project directory
+cd healthbridge-seva-kendra
+
+# Install dependencies
+npm install
+
+# Start the development server
 npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/0565a117-682b-47c0-964f-e346b3aea72f) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
