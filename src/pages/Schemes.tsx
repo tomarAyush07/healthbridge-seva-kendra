@@ -420,51 +420,39 @@ const SchemePage = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col perspective-1000">
+    <div className="min-h-screen flex flex-col">
       <Header />
       
       <main className="flex-1 py-12 px-4 bg-gradient-to-br from-slate-100 via-healthbridge-light to-white">
         <div className="container mx-auto">
           <div className="text-center mb-12">
-            <h1 
-              className="text-5xl md:text-6xl font-bold mb-6 font-display bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-healthbridge-blue to-blue-400 hover:scale-105 transition-all duration-700"
-              style={{ 
-                textShadow: '0 4px 12px rgba(59, 130, 246, 0.2)',
-                transform: 'translateZ(50px)'
-              }}
-            >
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 font-display bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-healthbridge-blue to-blue-400">
               {t('schemes_title')}
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed backdrop-blur-sm">
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               {t('schemes_description')}
             </p>
           </div>
 
           <div className="max-w-4xl mx-auto mb-12 space-y-6">
             <div className="flex gap-6 flex-col sm:flex-row">
-              <div className="flex-1 relative group">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 transition-all duration-300 group-hover:text-healthbridge-blue" />
+              <div className="flex-1 relative">
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <Input
                   type="text"
                   placeholder={t('search_schemes')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 h-14 rounded-xl border-2 focus:ring-2 focus:ring-healthbridge-blue focus:border-transparent transition-all duration-500 bg-white/80 backdrop-blur-sm hover:shadow-lg hover:scale-[1.02] hover:border-healthbridge-blue"
+                  className="w-full pl-12 h-14 rounded-xl border-2 focus:ring-2 focus:ring-healthbridge-blue focus:border-transparent bg-white/80"
                 />
               </div>
               <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                <SelectTrigger 
-                  className="w-[220px] h-14 rounded-xl border-2 hover:border-healthbridge-blue transition-all duration-500 bg-white/80 backdrop-blur-sm hover:shadow-lg hover:scale-[1.02]"
-                >
+                <SelectTrigger className="w-[220px] h-14 rounded-xl border-2 hover:border-healthbridge-blue bg-white/80">
                   <SelectValue placeholder={t('select_category')} />
                 </SelectTrigger>
                 <SelectContent>
                   {categories.map(category => (
-                    <SelectItem 
-                      key={category.value} 
-                      value={category.value}
-                      className="transition-all duration-300 hover:bg-healthbridge-light/50 hover:translate-x-1"
-                    >
+                    <SelectItem key={category.value} value={category.value}>
                       {category.label}
                     </SelectItem>
                   ))}
@@ -475,60 +463,33 @@ const SchemePage = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {Object.entries(filteredSchemes).map(([category, schemeList]) => (
-              schemeList.map((scheme, index) => (
-                <div 
-                  key={scheme.id}
-                  className="group scheme-card"
-                  style={{ 
-                    animationDelay: `${index * 0.2}s`,
-                    transformStyle: 'preserve-3d'
-                  }}
-                >
-                  <Card 
-                    className="h-full border-2 bg-white/90 backdrop-blur-lg transition-all duration-700 hover:shadow-[0_25px_80px_-15px_rgba(59,130,246,0.25)] relative overflow-hidden transform-style-3d"
-                    style={{ 
-                      transform: 'translateZ(0)',
-                      borderImage: 'linear-gradient(to right, rgba(59, 130, 246, 0.2), rgba(147, 197, 253, 0.2)) 1'
-                    }}
-                  >
-                    <div className="relative overflow-hidden scheme-image-container">
-                      <div 
-                        className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-healthbridge-blue/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10"
-                        style={{ 
-                          mixBlendMode: 'overlay',
-                          transform: 'translateZ(20px)'
-                        }}
-                      />
+              schemeList.map((scheme) => (
+                <div key={scheme.id} className="group">
+                  <Card className="h-full border-2 bg-white/90 relative overflow-hidden transition-all duration-300 hover:shadow-lg">
+                    <div className="relative">
                       <img 
                         src={scheme.image} 
                         alt={scheme.title}
-                        className="w-full h-56 object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-2 scheme-image"
+                        className="w-full h-56 object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                       <Badge 
                         variant={scheme.status === "active" ? "default" : "secondary"} 
-                        className="absolute top-3 right-3 z-20 transition-all duration-500 group-hover:scale-110 group-hover:translate-y-[-2px]"
-                        style={{ transform: 'translateZ(40px)' }}
+                        className="absolute top-3 right-3 z-20"
                       >
                         {t(scheme.status)}
                       </Badge>
                     </div>
                     <CardHeader>
-                      <CardTitle 
-                        className="text-xl font-bold text-healthbridge-blue transition-all duration-500 group-hover:translate-x-2 scheme-title"
-                      >
+                      <CardTitle className="text-xl font-bold text-healthbridge-blue transition-colors duration-300 group-hover:text-blue-600">
                         {scheme.title}
                       </CardTitle>
-                      <CardDescription 
-                        className="transition-all duration-500 group-hover:translate-x-1 scheme-description"
-                      >
+                      <CardDescription>
                         {scheme.description}
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-4">
-                        <div 
-                          className="bg-gradient-to-br from-slate-50/80 via-white/80 to-healthbridge-light/40 rounded-xl p-5 transition-all duration-500 group-hover:shadow-lg group-hover:translate-y-[-5px] group-hover:from-slate-50/90 group-hover:to-healthbridge-light/50 scheme-eligibility"
-                        >
+                        <div className="bg-gradient-to-br from-slate-50/80 via-white/80 to-healthbridge-light/40 rounded-xl p-5">
                           <p className="font-medium text-sm text-gray-700 mb-2">{t('eligibility')}:</p>
                           <p className="text-gray-600 text-sm">{scheme.eligibility}</p>
                         </div>
@@ -536,7 +497,7 @@ const SchemePage = () => {
                           {scheme.benefits.map((benefit, index) => (
                             <div 
                               key={index} 
-                              className="flex items-center gap-2 text-sm text-gray-600 bg-white/80 backdrop-blur-sm p-3 rounded-lg transition-all duration-500 hover:bg-white/90 hover:shadow-md hover:translate-y-[-3px] border border-slate-100 scheme-benefit"
+                              className="flex items-center gap-2 text-sm text-gray-600 bg-white/80 p-3 rounded-lg border border-slate-100"
                             >
                               <CheckCircle2 className="h-4 w-4 text-green-500" />
                               <span>{benefit}</span>
@@ -548,7 +509,7 @@ const SchemePage = () => {
                     <CardFooter className="justify-end">
                       <Button 
                         asChild
-                        className="bg-gradient-to-r from-healthbridge-blue via-blue-500 to-blue-400 hover:opacity-90 transition-all duration-500 group-hover:translate-y-[-3px] group-hover:shadow-lg hover:scale-105 hover:shadow-blue-200/50 scheme-button"
+                        className="bg-gradient-to-r from-healthbridge-blue via-blue-500 to-blue-400 hover:opacity-90 transition-opacity duration-300"
                       >
                         <a href={scheme.link} target="_blank" rel="noopener noreferrer" className="gap-2">
                           {t('learn_more')} <ExternalLink className="h-4 w-4" />

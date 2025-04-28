@@ -1,4 +1,3 @@
-import { motion, useScroll, useTransform } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -8,20 +7,13 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState, useRef } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Blog = () => {
   const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState("");
-  const containerRef = useRef<HTMLDivElement>(null);
-  
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"]
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1, 0]);
+  const navigate = useNavigate();
 
   const blogCategories = [
     { name: "AI in Healthcare", icon: Brain, color: "from-purple-500 to-indigo-500" },
@@ -125,119 +117,73 @@ const Blog = () => {
     }
   ];
 
+  const handlePostClick = (postId: number) => {
+    navigate(`/blog/${postId}`);
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-100 via-blue-50 to-slate-100">
       <Header />
       
-      <main className="flex-1" ref={containerRef}>
+      <main className="flex-1">
         {/* Hero Section */}
-        <motion.section 
-          className="relative py-20 overflow-hidden"
-          style={{ y, opacity }}
-        >
-          <div className="absolute inset-0">
-            {/* Animated Grid Background */}
-            <div 
-              className="absolute inset-0 opacity-[0.05]"
-              style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54 0h6v6h-6zM0 54h6v6H0z' fill='%234F46E5' fill-opacity='0.4'/%3E%3C/svg%3E")`,
-                backgroundSize: '30px 30px'
-              }}
-            />
-            
-            {/* Gradient Orbs */}
-            <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-200/30 rounded-full filter blur-3xl animate-pulse" />
-            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-200/30 rounded-full filter blur-3xl animate-pulse delay-1000" />
-          </div>
+        <section className="relative py-20">
+          <div className="text-center max-w-4xl mx-auto">
+            <h1 className="text-6xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+              Healthcare Insights
+            </h1>
+            <p className="text-xl text-gray-600 mb-8">
+              Explore the latest breakthroughs and innovations in healthcare technology
+            </p>
 
-          <div className="container relative z-10 px-4">
-            <div className="text-center max-w-4xl mx-auto">
-              <motion.h1 
-                className="text-6xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-              >
-                Healthcare Insights
-              </motion.h1>
-              <motion.p 
-                className="text-xl text-gray-600 mb-8"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-              >
-                Explore the latest breakthroughs and innovations in healthcare technology
-              </motion.p>
-
-              {/* Search Bar */}
-              <motion.div 
-                className="max-w-2xl mx-auto relative group"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 rounded-lg blur group-hover:blur-xl transition-all duration-300" />
-                <div className="relative flex gap-2">
-                  <Input
-                    type="text"
-                    placeholder="Search articles..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full bg-white/80 border-0 text-gray-900 placeholder:text-gray-500 focus-visible:ring-2 focus-visible:ring-blue-500"
-                  />
-                  <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white">
-                    <Search className="w-5 h-5" />
-                  </Button>
-                </div>
-              </motion.div>
+            {/* Search Bar */}
+            <div className="max-w-2xl mx-auto relative">
+              <div className="relative flex gap-2">
+                <Input
+                  type="text"
+                  placeholder="Search articles..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full bg-white/80 border-0 text-gray-900 placeholder:text-gray-500 focus-visible:ring-2 focus-visible:ring-blue-500"
+                />
+                <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white">
+                  <Search className="w-5 h-5" />
+                </Button>
+              </div>
             </div>
-
-            {/* Categories */}
-            <motion.div 
-              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-16"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-            >
-              {blogCategories.map((category, index) => (
-                <motion.div
-                  key={category.name}
-                  className="group relative"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                >
-                  <div className={`absolute inset-0 bg-gradient-to-br ${category.color} rounded-xl opacity-20 blur-sm group-hover:blur transition-all duration-300`} />
-                  <div className="relative bg-white/80 backdrop-blur-xl rounded-xl p-4 border border-blue-100/20">
-                    <category.icon className="w-8 h-8 mb-2 text-gray-800" />
-                    <h3 className="text-gray-800 font-semibold">{category.name}</h3>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
           </div>
-        </motion.section>
+
+          {/* Categories */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-16">
+            {blogCategories.map((category) => (
+              <div key={category.name} className="group relative">
+                <div className={`absolute inset-0 bg-gradient-to-br ${category.color} rounded-xl opacity-20`} />
+                <div className="relative bg-white/80 rounded-xl p-4 border border-blue-100/20">
+                  <category.icon className="w-8 h-8 mb-2 text-gray-800" />
+                  <h3 className="text-gray-800 font-semibold">{category.name}</h3>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
 
         {/* Featured Posts */}
-        <section className="py-20 relative">
+        <section>
           <div className="container px-4">
             <h2 className="text-4xl font-bold mb-12 text-gray-800">Featured Articles</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {featuredPosts.map((post, index) => (
-                <motion.article
-                  key={post.id}
-                  className="group relative"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.2 }}
+              {featuredPosts.map((post) => (
+                <article 
+                  key={post.id} 
+                  className="group relative cursor-pointer"
+                  onClick={() => handlePostClick(post.id)}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500" />
-                  <div className="relative bg-white/80 backdrop-blur-xl rounded-2xl overflow-hidden border border-blue-100/20">
+                  <div className="relative bg-white/80 rounded-2xl overflow-hidden border border-blue-100/20">
                     <div className="aspect-[16/10] overflow-hidden">
                       <img 
                         src={post.image} 
                         alt={post.title}
-                        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                        className="w-full h-full object-cover"
                       />
                     </div>
                     <div className="p-6">
@@ -255,7 +201,7 @@ const Blog = () => {
                           {post.author}
                         </span>
                       </div>
-                      <h3 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-blue-600 transition-colors">
+                      <h3 className="text-xl font-bold text-gray-800 mb-2">
                         {post.title}
                       </h3>
                       <p className="text-gray-600 mb-4">{post.excerpt}</p>
@@ -272,41 +218,36 @@ const Blog = () => {
                       </div>
                       <Button 
                         variant="ghost" 
-                        className="group/btn text-blue-600 hover:text-blue-700"
+                        className="text-blue-600 hover:text-blue-700"
                       >
                         Read More 
-                        <ArrowRight className="w-4 h-4 ml-2 transform group-hover/btn:translate-x-1 transition-transform" />
+                        <ArrowRight className="w-4 h-4 ml-2" />
                       </Button>
                     </div>
                   </div>
-                </motion.article>
+                </article>
               ))}
             </div>
           </div>
         </section>
 
         {/* Recent Posts */}
-        <section className="py-20 relative">
+        <section>
           <div className="container px-4">
             <h2 className="text-4xl font-bold mb-12 text-gray-800">Recent Posts</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {recentPosts.map((post, index) => (
-                <motion.article
-                  key={post.id}
-                  className="group relative"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  whileHover={{ y: -5 }}
+              {recentPosts.map((post) => (
+                <article 
+                  key={post.id} 
+                  className="group relative cursor-pointer"
+                  onClick={() => handlePostClick(post.id)}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-xl blur-lg group-hover:blur-xl transition-all duration-300" />
-                  <div className="relative bg-white/80 backdrop-blur-xl rounded-xl overflow-hidden border border-blue-100/20">
+                  <div className="relative bg-white/80 rounded-xl overflow-hidden border border-blue-100/20">
                     <div className="aspect-video overflow-hidden">
                       <img 
                         src={post.image} 
                         alt={post.title}
-                        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                        className="w-full h-full object-cover"
                       />
                     </div>
                     <div className="p-4">
@@ -314,13 +255,13 @@ const Blog = () => {
                         <Calendar className="w-4 h-4" />
                         {post.date}
                       </div>
-                      <h3 className="text-lg font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">
+                      <h3 className="text-lg font-semibold text-gray-800">
                         {post.title}
                       </h3>
                       <span className="text-sm text-blue-600">{post.category}</span>
                     </div>
                   </div>
-                </motion.article>
+                </article>
               ))}
             </div>
           </div>

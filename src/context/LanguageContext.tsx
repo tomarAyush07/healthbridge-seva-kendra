@@ -38,6 +38,18 @@ const translations: Translations = {
     'en': 'Schemes',
     'hi': 'योजनाएँ',
   },
+  'research': {
+    'en': 'Research',
+    'hi': 'अनुसंधान',
+  },
+  'research_description': {
+    'en': 'Explore our latest research papers and findings in healthcare innovation.',
+    'hi': 'स्वास्थ्य देखभाल नवाचार में हमारे नवीनतम शोध पत्रों और निष्कर्षों का अन्वेषण करें।',
+  },
+  'search_research': {
+    'en': 'Search research papers...',
+    'hi': 'शोध पत्र खोजें...',
+  },
   'blog': {
     'en': 'Blog',
     'hi': 'ब्लॉग',
@@ -409,6 +421,22 @@ const translations: Translations = {
   'diagnostics_description': {
     'en': 'Advanced diagnostic services with quick results.',
     'hi': 'त्वरित परिणामों के साथ उन्नत नैदानिक सेवाएं।'
+  },
+  'clinical_research': {
+    'en': 'Clinical Research',
+    'hi': 'नैदानिक अनुसंधान',
+  },
+  'public_health': {
+    'en': 'Public Health',
+    'hi': 'सार्वजनिक स्वास्थ्य',
+  },
+  'biomedical': {
+    'en': 'Biomedical',
+    'hi': 'बायोमेडिकल',
+  },
+  'read_paper': {
+    'en': 'Read Paper',
+    'hi': 'पेपर पढ़ें',
   },
 };
 
