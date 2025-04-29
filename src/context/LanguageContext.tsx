@@ -20,12 +20,18 @@ const languageLabels: LanguageLabels = {
   ml: 'മലയാളം (Malayalam)',
 };
 
+// Custom translations type
+type CustomTranslations = {
+  [key: string]: string;
+} | null;
+
 // Translation data structure
 type Translations = {
   [key: string]: {
     [lang in Language]?: string;
   };
 };
+
 
 // Initial translations data
 const translations: Translations = {
@@ -447,16 +453,24 @@ type LanguageContextType = {
   t: (key: string) => string;
   getLanguageLabel: (code: Language) => string;
   availableLanguages: Language[];
+  setCustomTranslations: (customTranslations: CustomTranslations) => void;
 };
 
-// Create the context
+// Create the context with a default value
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 // Provider component
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<Language>('en');
+  const [customTranslations, setCustomTranslations] = useState<CustomTranslations>(null);
 
   const t = (key: string): string => {
+    // First check if there's a custom translation for this key
+    if (customTranslations && customTranslations[key]) {
+      return customTranslations[key];
+    }
+    
+    // Otherwise use the regular translations
     if (!translations[key]) {
       console.warn(`Translation key not found: ${key}`);
       return key;
@@ -470,8 +484,17 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   const availableLanguages: Language[] = ['en', 'hi', 'bn', 'te', 'mr', 'ta', 'ur', 'gu', 'kn', 'ml'];
 
+  const contextValue: LanguageContextType = {
+    language,
+    setLanguage,
+    t,
+    getLanguageLabel,
+    availableLanguages,
+    setCustomTranslations,
+  };
+
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t, getLanguageLabel, availableLanguages }}>
+    <LanguageContext.Provider value={contextValue}>
       {children}
     </LanguageContext.Provider>
   );

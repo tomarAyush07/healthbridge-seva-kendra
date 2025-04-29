@@ -1,17 +1,26 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogOut } from "lucide-react";
 import LanguageSelector from "./LanguageSelector";
 import { useLanguage } from "@/context/LanguageContext";
+import { useAuth } from "@/context/AuthContext"; // Import Auth context
 import { cn } from "@/lib/utils";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useLanguage();
   const location = useLocation();
+  const navigate = useNavigate();
+  const { isAuthenticated, logout } = useAuth(); // Get authentication state and logout function
 
   const toggleMenu = () => setIsOpen(!isOpen);
+  
+  // Handle logout
+  const handleLogout = () => {
+    logout(); // Call logout function from Auth context
+    navigate('/'); // Redirect to home page after logout
+  };
 
   const navLinks = [
     { path: "/", label: 'home' },
@@ -65,16 +74,30 @@ const Header = () => {
 
         <div className="hidden md:flex items-center gap-4">
           <LanguageSelector />
-          <Link to="/login">
-            <Button variant="outline" size="sm">
-              {t('login')}
+          {isAuthenticated ? (
+            <Button 
+              onClick={handleLogout}
+              variant="outline" 
+              size="sm"
+              className="flex items-center gap-2"
+            >
+              <LogOut size={16} />
+              {t('logout')}
             </Button>
-          </Link>
-          <Link to="/signup">
-            <Button className="bg-healthbridge-blue hover:bg-healthbridge-blue/90" size="sm">
-              {t('signup')}
-            </Button>
-          </Link>
+          ) : (
+            <>
+              <Link to="/login">
+                <Button variant="outline" size="sm">
+                  {t('login')}
+                </Button>
+              </Link>
+              <Link to="/login" state={{ activeTab: "signup" }}>
+                <Button className="bg-healthbridge-blue hover:bg-healthbridge-blue/90" size="sm">
+                  {t('signup')}
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -112,16 +135,32 @@ const Header = () => {
               </Link>
             ))}
             <div className="flex flex-col gap-2 pt-2 border-t">
-              <Link to="/login" className="w-full" onClick={() => setIsOpen(false)}>
-                <Button variant="outline" className="w-full">
-                  {t('login')}
+              {isAuthenticated ? (
+                <Button 
+                  onClick={() => {
+                    handleLogout();
+                    setIsOpen(false);
+                  }} 
+                  variant="outline" 
+                  className="w-full flex items-center justify-center gap-2"
+                >
+                  <LogOut size={16} />
+                  {t('logout')}
                 </Button>
-              </Link>
-              <Link to="/signup" className="w-full" onClick={() => setIsOpen(false)}>
-                <Button className="w-full bg-healthbridge-blue hover:bg-healthbridge-blue/90">
-                  {t('signup')}
-                </Button>
-              </Link>
+              ) : (
+                <>
+                  <Link to="/login" className="w-full" onClick={() => setIsOpen(false)}>
+                    <Button variant="outline" className="w-full">
+                      {t('login')}
+                    </Button>
+                  </Link>
+                  <Link to="/login" state={{ activeTab: "signup" }} className="w-full" onClick={() => setIsOpen(false)}>
+                    <Button className="w-full bg-healthbridge-blue hover:bg-healthbridge-blue/90">
+                      {t('signup')}
+                    </Button>
+                  </Link>
+                </>
+              )}
             </div>
           </nav>
         </div>
