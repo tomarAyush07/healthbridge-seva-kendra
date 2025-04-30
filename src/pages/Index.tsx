@@ -11,6 +11,7 @@ import Footer from "../components/Footer";
 import LoadingScreen from "../components/LoadingScreen";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
+import Home from "./Home";
 
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -44,21 +45,7 @@ const Index = () => {
     return <LoadingScreen onFinished={() => setIsLoading(false)} />;
   }
 
-  return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      <main className="flex-1">
-        {/* The Hero component doesn't accept customTitle/customSubtitle props */}
-        <Hero />
-        <ServiceCards />
-        <Stats />
-        <ImpactSection />
-        <Testimonials />
-        <Newsletter />
-      </main>
-      <Footer />
-    </div>
-  );
+  return <Home />;
 };
 
 export default Index;

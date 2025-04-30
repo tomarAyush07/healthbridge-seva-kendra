@@ -5,7 +5,8 @@ import { useToast } from "@/hooks/use-toast";
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  login: (access: string, refresh: string) => void;
+  user: { name: string; email?: string } | null;
+  login: (access: string, refresh: string, username: string, email?: string) => void;
   logout: () => void;
   // Authentication state
   isLoading: boolean;
@@ -48,6 +49,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState<{ name: string; email?: string } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
   const [otp, setOtp] = useState("");
@@ -57,7 +59,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // On mount, check if tokens exist
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
+    const userInfo = localStorage.getItem('userInfo');
     setIsAuthenticated(!!token);
+    if (userInfo) {
+      setUser(JSON.parse(userInfo));
+    }
   }, []);
 
   // Timer effect for countdown
@@ -140,17 +146,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return "An error occurred. Please try again.";
   };
 
-  const login = (access: string, refresh: string) => {
+  const login = (access: string, refresh: string, username: string, email?: string) => {
     localStorage.setItem('accessToken', access);
     localStorage.setItem('refreshToken', refresh);
     setIsAuthenticated(true);
+    const userInfo = { name: username, email };
+    setUser(userInfo);
+    localStorage.setItem('userInfo', JSON.stringify(userInfo));
     navigate('/', { replace: true });
   };
 
   const logout = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('userInfo');
     setIsAuthenticated(false);
+    setUser(null);
     navigate('/login', { replace: true });
   };
 
@@ -165,8 +176,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
 
       const { access, refresh } = response.data;
-
-      login(access, refresh);
+      // Try to get email from backend if available (not implemented here, so just username)
+      login(access, refresh, loginData.username);
 
       toast({
         title: "Login Successful",
@@ -200,7 +211,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(true);
 
     try {
-      // Submit registration data to backend
       const response = await axios.post('https://health-backend-gjoo.onrender.com/auth/register/', {
         username: signupData.username,
         email: signupData.email,
@@ -208,13 +218,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         confirm_password: signupData.confirmPassword,
       });
 
+      // Store username immediately after successful registration
+      const userInfo = { name: signupData.username, email: signupData.email };
+      setUser(userInfo);
+      localStorage.setItem('userInfo', JSON.stringify(userInfo));
+
       toast({
         title: "Registration Successful",
         description: response.data.message || "Please verify your email with the OTP sent to your inbox.",
       });
 
       setOtpSent(true);
-      // Start the resend timer when OTP is first sent
       startResendTimer();
     } catch (error) {
       console.error(error);
@@ -302,6 +316,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   return (
     <AuthContext.Provider value={{ 
       isAuthenticated, 
+      user,
       login, 
       logout,
       isLoading,

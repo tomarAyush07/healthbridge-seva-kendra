@@ -1,171 +1,194 @@
-import { useLanguage } from "@/context/LanguageContext";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { ArrowRight, MessageSquare, Bot, Zap, Sparkles, Info } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { useTranslation } from "react-i18next";
+import { useAuth } from "@/context/AuthContext";
+import { useRef } from "react";
+import ServiceCards from "@/components/ServiceCards";
+import Stats from "@/components/Stats";
+import Testimonials from "@/components/Testimonials";
+import Newsletter from "@/components/Newsletter";
+import ImpactSection from "@/components/ImpactSection";
+import { toast } from "@/components/ui/sonner";
 
 const Home = () => {
-  const { t } = useLanguage();
+  const { t } = useTranslation();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
 
-  const features = [
-    {
-      title: t('telemedicine'),
-      description: t('telemedicine_description'),
-      icon: <CheckCircle2 className="h-6 w-6 text-healthbridge-blue" />
-    },
-    {
-      title: t('health_camps'),
-      description: t('health_camps_description'),
-      icon: <CheckCircle2 className="h-6 w-6 text-healthbridge-blue" />
-    },
-    {
-      title: t('medicine_delivery'),
-      description: t('medicine_delivery_description'),
-      icon: <CheckCircle2 className="h-6 w-6 text-healthbridge-blue" />
-    },
-    {
-      title: t('diagnostics'),
-      description: t('diagnostics_description'),
-      icon: <CheckCircle2 className="h-6 w-6 text-healthbridge-blue" />
-    }
-  ];
+  const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1, 0.8]);
+
+  useEffect(() => {
+    console.log('Auth state:', {
+      isAuthenticated,
+      localStorage: {
+        accessToken: localStorage.getItem('accessToken'),
+        refreshToken: localStorage.getItem('refreshToken')
+      },
+      sessionStorage: {
+        accessToken: sessionStorage.getItem('accessToken'),
+        refreshToken: sessionStorage.getItem('refreshToken')
+      }
+    });
+  }, [isAuthenticated]);
 
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       
       {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-slate-50 to-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="text-4xl md:text-6xl font-bold mb-6 text-healthbridge-dark"
-            >
-              {t('hero_title')}
-            </motion.h1>
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-xl text-gray-600 mb-8"
-            >
-              {t('hero_subtitle')}
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center"
-            >
-              <Button size="lg" className="bg-healthbridge-blue hover:bg-healthbridge-blue/90">
-                {t('get_started')} <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <Button size="lg" variant="outline">
-                {t('learn_more')}
-              </Button>
-            </motion.div>
-          </div>
+      <motion.section
+        ref={containerRef}
+        className="relative min-h-screen overflow-hidden"
+      >
+        {/* Background Image with Overlay */}
+        <div className="absolute inset-0 z-0">
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: "url('/lovable-uploads/719f9236-4ef9-4250-aec0-901cdb639bd3.png')",
+              filter: "brightness(0.95)"
+            }}
+          />
+          <div 
+            className="absolute inset-0"
+            style={{
+              background: "linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.2) 100%)"
+            }}
+          />
+          
+          {/* Animated Gradient Overlays */}
+          <motion.div
+            className="absolute inset-0"
+            style={{
+              background: "radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 70%)",
+              scale,
+              opacity
+            }}
+          />
+          <motion.div
+            className="absolute inset-0"
+            style={{
+              background: "radial-gradient(circle at 30% 70%, rgba(20, 184, 166, 0.1) 0%, transparent 70%)",
+              scale,
+              opacity
+            }}
+          />
         </div>
-      </section>
 
-      {/* Features Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-healthbridge-dark mb-4">
-              {t('our_services')}
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              {t('services_description')}
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => (
+        {/* Content Container with Semi-transparent Background */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-white/30 backdrop-blur-[0.1px]" />
+        </div>
+
+        {/* Main Content */}
+        <div className="container relative z-10 px-4 mx-auto">
+          <div className="flex flex-col items-center text-center">
+            <motion.div
+              style={{ y, opacity }}
+              className="max-w-4xl mx-auto text-center"
+            >
+              {/* Animated Robot Icon */}
               <motion.div
-                key={index}
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ duration: 0.8, type: "spring" }}
+                className="mb-8 inline-block"
+              >
+                <div className="relative">
+                  <Bot className="h-24 w-24 text-healthbridge-blue" />
+                  <motion.div
+                    animate={{
+                      scale: [1, 1.2, 1],
+                      rotate: [0, 10, -10, 0],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      repeatType: "reverse"
+                    }}
+                    className="absolute -top-2 -right-2"
+                  >
+                    <Zap className="h-8 w-8 text-healthbridge-teal animate-pulse" />
+                  </motion.div>
+                </div>
+              </motion.div>
+
+              {/* Title with Gradient Text */}
+              <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow"
+                transition={{ duration: 0.8 }}
+                className="text-5xl md:text-7xl font-display font-bold mb-6"
               >
-                <div className="flex items-center gap-4 mb-4">
-                  {feature.icon}
-                  <h3 className="text-xl font-semibold text-healthbridge-dark">
-                    {feature.title}
-                  </h3>
-                </div>
-                <p className="text-gray-600">
-                  {feature.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-healthbridge-blue to-healthbridge-teal">
+                  Meet Your AI Health Companion
+                </span>
+              </motion.h1>
 
-      {/* Stats Section */}
-      <section className="py-20 bg-gradient-to-br from-slate-50 to-white">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="text-center"
-            >
-              <h3 className="text-4xl font-bold text-healthbridge-blue mb-2">
-                10,000+
-              </h3>
-              <p className="text-gray-600">
-                {t('happy_patients')}
-              </p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-center"
-            >
-              <h3 className="text-4xl font-bold text-healthbridge-blue mb-2">
-                500+
-              </h3>
-              <p className="text-gray-600">
-                {t('medical_experts')}
-              </p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-center"
-            >
-              <h3 className="text-4xl font-bold text-healthbridge-blue mb-2">
-                100+
-              </h3>
-              <p className="text-gray-600">
-                {t('hospitals')}
-              </p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="text-center"
-            >
-              <h3 className="text-4xl font-bold text-healthbridge-blue mb-2">
-                500+
-              </h3>
-              <p className="text-gray-600">
-                {t('villages_covered')}
-              </p>
+              {/* Subtitle with Sparkle Effect */}
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="text-xl md:text-2xl text-gray-600 mb-12 relative inline-block"
+              >
+                Your friendly AI assistant is here to guide you through your health journey
+                <Sparkles className="absolute -top-4 -right-4 h-6 w-6 text-healthbridge-teal animate-pulse" />
+              </motion.p>
+
+              {/* CTA Button */}
+              {isAuthenticated ? (
+                <Button
+                  size="lg"
+                  className="bg-healthbridge-blue hover:bg-healthbridge-blue/90 text-white"
+                  onClick={() => navigate('/ai-chat')}
+                >
+                  <MessageSquare className="mr-2 h-5 w-5" />
+                  Talk with your Health AI
+                </Button>
+              ) : (
+                <Button
+                  size="lg"
+                  className="bg-healthbridge-blue hover:bg-healthbridge-blue/90 text-white"
+                  onClick={() => {
+                    toast(
+                      "Welcome to HealthBridge! Please log in to access your AI health assistant.",
+                      {
+                        icon: <Info className="h-6 w-6 text-cyan-500" />,
+                        duration: 2000,
+                        className: "bg-white border-cyan-400 text-cyan-900 shadow-xl rounded-xl px-4 py-3",
+                      }
+                    );
+                    setTimeout(() => navigate('/login'), 2000);
+                  }}
+                >
+                  Get Started
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              )}
             </motion.div>
           </div>
         </div>
-      </section>
+      </motion.section>
+
+      {/* Original Components */}
+      <ServiceCards />
+      <Stats />
+      <ImpactSection />
+      <Testimonials />
+      <Newsletter />
 
       <Footer />
     </div>

@@ -1,25 +1,54 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, LogOut } from "lucide-react";
+import { Menu, X, LogOut, User as UserIcon } from "lucide-react";
 import LanguageSelector from "./LanguageSelector";
 import { useLanguage } from "@/context/LanguageContext";
 import { useAuth } from "@/context/AuthContext"; // Import Auth context
 import { cn } from "@/lib/utils";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from "@/components/ui/alert-dialog";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const { t } = useLanguage();
   const location = useLocation();
   const navigate = useNavigate();
-  const { isAuthenticated, logout } = useAuth(); // Get authentication state and logout function
+  const { isAuthenticated, logout, user } = useAuth(); // Get authentication state and logout function
 
   const toggleMenu = () => setIsOpen(!isOpen);
   
   // Handle logout
   const handleLogout = () => {
-    logout(); // Call logout function from Auth context
-    navigate('/'); // Redirect to home page after logout
+    setShowLogoutDialog(true);
+  };
+
+  const confirmLogout = () => {
+    logout();
+    navigate("/");
+    setShowLogoutDialog(false);
+  };
+
+  const cancelLogout = () => {
+    setShowLogoutDialog(false);
   };
 
   const navLinks = [
@@ -75,15 +104,65 @@ const Header = () => {
         <div className="hidden md:flex items-center gap-4">
           <LanguageSelector />
           {isAuthenticated ? (
-            <Button 
-              onClick={handleLogout}
-              variant="outline" 
-              size="sm"
-              className="flex items-center gap-2"
-            >
-              <LogOut size={16} />
-              {t('logout')}
-            </Button>
+            <>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="flex items-center gap-2 px-2 hover:bg-healthbridge-blue/10 focus:bg-healthbridge-blue/10 text-healthbridge-dark">
+                    <UserIcon className="h-5 w-5 text-healthbridge-blue" />
+                    <span className="font-semibold text-healthbridge-dark">
+                      {user?.name || "Account"}
+                    </span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-72">
+                  <DropdownMenuLabel>
+                    <div className="flex flex-col gap-1">
+                      <span className="font-bold text-lg text-healthbridge-blue">{user?.name}</span>
+                      <span className="text-xs text-gray-500">{user?.email || "No email on file"}</span>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <div className="px-3 py-2">
+                    <div className="font-semibold text-sm mb-1 text-gray-700">Dashboard</div>
+                    <div className="flex flex-col gap-1 text-xs text-gray-600">
+                      <div>• Total Logins: <span className="font-bold">1</span></div>
+                      <div>• Last Login: <span className="font-bold">Just now</span></div>
+                      <div>• Recent Activity: <span className="font-bold">AI Chat, Schemes</span></div>
+                    </div>
+                  </div>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => navigate('/account-dashboard')} className="font-semibold flex items-center gap-2 hover:bg-healthbridge-blue/10 focus:bg-healthbridge-blue/10 hover:text-healthbridge-blue focus:text-healthbridge-blue">
+                    <UserIcon className="h-4 w-4" /> Account Dashboard
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleLogout} className="text-red-600 font-semibold flex items-center gap-2 hover:bg-healthbridge-blue/10 focus:bg-healthbridge-blue/10">
+                    <LogOut className="h-4 w-4" /> Log out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <Button 
+                onClick={handleLogout}
+                variant="outline" 
+                size="sm"
+                className="flex items-center gap-2 border-healthbridge-blue text-healthbridge-blue hover:bg-healthbridge-blue/10 focus:bg-healthbridge-blue/10"
+              >
+                <LogOut size={16} />
+                {t('logout')}
+              </Button>
+              <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Log out?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Are you sure you want to log out of your HealthBridge account?
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel onClick={cancelLogout}>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={confirmLogout}>Log out</AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </>
           ) : (
             <>
               <Link to="/login">
@@ -92,7 +171,7 @@ const Header = () => {
                 </Button>
               </Link>
               <Link to="/login" state={{ activeTab: "signup" }}>
-                <Button className="bg-healthbridge-blue hover:bg-healthbridge-blue/90" size="sm">
+                <Button className="bg-healthbridge-blue hover:bg-healthbridge-teal" size="sm">
                   {t('signup')}
                 </Button>
               </Link>
@@ -136,17 +215,33 @@ const Header = () => {
             ))}
             <div className="flex flex-col gap-2 pt-2 border-t">
               {isAuthenticated ? (
-                <Button 
-                  onClick={() => {
-                    handleLogout();
-                    setIsOpen(false);
-                  }} 
-                  variant="outline" 
-                  className="w-full flex items-center justify-center gap-2"
-                >
-                  <LogOut size={16} />
-                  {t('logout')}
-                </Button>
+                <>
+                  <Button 
+                    onClick={() => {
+                      handleLogout();
+                      setIsOpen(false);
+                    }} 
+                    variant="outline" 
+                    className="w-full flex items-center justify-center gap-2"
+                  >
+                    <LogOut size={16} />
+                    {t('logout')}
+                  </Button>
+                  <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Log out?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Are you sure you want to log out of your HealthBridge account?
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel onClick={cancelLogout}>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={confirmLogout}>Log out</AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </>
               ) : (
                 <>
                   <Link to="/login" className="w-full" onClick={() => setIsOpen(false)}>
@@ -155,7 +250,7 @@ const Header = () => {
                     </Button>
                   </Link>
                   <Link to="/login" state={{ activeTab: "signup" }} className="w-full" onClick={() => setIsOpen(false)}>
-                    <Button className="w-full bg-healthbridge-blue hover:bg-healthbridge-blue/90">
+                    <Button className="w-full bg-healthbridge-blue hover:bg-healthbridge-teal">
                       {t('signup')}
                     </Button>
                   </Link>

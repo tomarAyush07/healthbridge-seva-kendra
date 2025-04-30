@@ -4,7 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "./context/LanguageContext";
-import { AuthProvider } from "./context/AuthContext";  // Import here
+import { AuthProvider } from "./context/AuthContext";
 
 // pages...
 import Index from "./pages/Index";
@@ -14,7 +14,9 @@ import Blog from "./pages/Blog";
 import Login from "./pages/Login";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
-import Research from "./pages/Research"
+import Research from "./pages/Research";
+import AIChat from "@/pages/AIChat";
+import AccountDashboard from "@/pages/AccountDashboard";
 
 import { AnimatePresence } from "framer-motion";
 
@@ -24,8 +26,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <LanguageProvider>
       <BrowserRouter>
-        {/* Move AuthProvider inside the BrowserRouter */}
-        <AuthProvider>   
+        <AuthProvider>
           <TooltipProvider>
             <Toaster />
             <Sonner />
@@ -38,6 +39,8 @@ const App = () => (
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/ai-chat" element={<AIChat />} />
+                <Route path="/account-dashboard" element={<AccountDashboard />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </AnimatePresence>
