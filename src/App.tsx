@@ -17,6 +17,7 @@ import Contact from "./pages/Contact";
 import Research from "./pages/Research";
 import AIChat from "@/pages/AIChat";
 import AccountDashboard from "@/pages/AccountDashboard";
+import HealthAssessment from "@/pages/HealthAssessment";
 
 import { AnimatePresence } from "framer-motion";
 
@@ -41,6 +42,7 @@ const App = () => (
                 <Route path="/login" element={<Login />} />
                 <Route path="/ai-chat" element={<AIChat />} />
                 <Route path="/account-dashboard" element={<AccountDashboard />} />
+                <Route path="/health-assessment" element={<HealthAssessment />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </AnimatePresence>

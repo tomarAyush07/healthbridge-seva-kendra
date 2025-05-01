@@ -57,7 +57,8 @@ const Header = () => {
     { path: "/research", label: 'research' },
     { path: "/blog", label: 'blog' },
     { path: "/about", label: 'about' },
-    { path: "/contact", label: 'contact' }
+    { path: "/contact", label: 'contact' },
+    { path: "/health-assessment", label: 'Health Assessment' }
   ];
 
   const isActivePath = (path: string) => {
@@ -71,10 +72,10 @@ const Header = () => {
     <header className="sticky top-0 bg-white/90 backdrop-blur-sm shadow-sm z-40">
       <div className="container flex items-center justify-between h-16 px-4 md:px-6">
         <Link to="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-healthbridge-blue to-healthbridge-teal flex items-center justify-center text-white font-bold">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-healthbridge-blue to-healthbridge-teal flex items-center justify-center text-white font-bold shadow-md">
             HB
           </div>
-          <span className="font-display text-xl font-semibold text-healthbridge-dark hidden md:block">
+          <span className="font-display text-2xl font-bold text-healthbridge-dark hidden md:block tracking-tight">
             HealthBridge
           </span>
         </Link>
